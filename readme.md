@@ -1,7 +1,7 @@
 # Influenza Risk Prediction Project
 
 ## Overview
-This project develops and deploys a machine learning model to predict influenza risk.
+This project develops and deploys a machine learning model that estimates the likelihood of influenza infection based on reported symptoms.
 
 ## Structure
 - notebooks → model development code.
