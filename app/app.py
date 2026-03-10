@@ -2,6 +2,9 @@ import os
 import joblib # pyright: ignore[reportMissingImports]
 import streamlit as st # pyright: ignore[reportMissingImports]
 import pandas as pd
+from openai import OpenAI # pyright: ignore[reportMissingImports]
+
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # ----------------------------
 # Load model and feature order
@@ -17,6 +20,37 @@ FEATURE_PATH = os.path.join(BASE_DIR, "../models/feature_order.pkl")
 # Load files
 model = joblib.load(MODEL_PATH)
 feature_order = joblib.load(FEATURE_PATH)
+
+ #AI Explanation Function       
+def generate_ai_explanation(symptoms, risk_score):
+
+    prompt = f"""
+    A machine learning model predicted a flu risk probability of {risk_score:.2f}.
+
+    The user reported the following symptoms:
+    {symptoms}
+
+    Explain:
+    - what the risk score means
+    - what the symptoms may indicate
+    - general next steps
+
+    Do not provide medical diagnosis.
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a helpful health assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        return response.choices[0].message.content
+
+    except Exception as e:
+        return "AI explanation is currently unavailable. Please try again later."
 
 # ----------------------------
 # App Title
@@ -98,11 +132,28 @@ input_df = input_df[feature_order]
 # Prediction
 # ----------------------------
 if st.button("Predict Flu Risk"):
-    risk_prob = model.predict_proba(input_df)[0][1]  # probability of flu
+
+    risk_prob = model.predict_proba(input_df)[0][1]
+
     st.subheader("Flu Risk Probability")
     st.write(f"{risk_prob*100:.2f}%")
-    
+
     if risk_prob > 0.5:
         st.warning("High risk of flu. Consider consulting a healthcare professional.")
     else:
         st.success("Low risk of flu. Stay safe!")
+
+    # -----------------------------
+    # Prepare symptom summary
+    # -----------------------------
+    symptom_list = [col for col, val in input_df.iloc[0].items() if val == 1]
+    symptom_summary = ", ".join(symptom_list)
+
+    # -----------------------------
+    # Generate AI explanation
+    # -----------------------------
+    ai_response = generate_ai_explanation(symptom_summary, risk_prob)
+
+    st.subheader("AI Health Insight")
+    st.write(ai_response)
+

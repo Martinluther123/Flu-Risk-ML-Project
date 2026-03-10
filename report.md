@@ -135,6 +135,8 @@ The final tuned Gradient Boosting model achieved the highest recall along with s
 
 ## 2.6 Deployment Tools
 
+## 2.6 Deployment Tools
+
 The project utilized the following tools:
 
 * Python for development
@@ -142,10 +144,11 @@ The project utilized the following tools:
 * Scikit-learn for machine learning
 * Joblib for model serialization
 * Streamlit for web application development
+* OpenAI API for generative AI explanations
 * GitHub for version control
 * Streamlit Community Cloud for hosting
 
-Streamlit was selected because it enables rapid deployment of interactive machine learning applications with minimal front-end development.
+Streamlit was selected because it enables rapid deployment of interactive machine learning applications with minimal front-end development. The OpenAI API was integrated to generate natural-language explanations of the model's predictions, improving the interpretability of the system for non-technical users.
 
 
 
@@ -156,6 +159,22 @@ Several alternative approaches were considered:
 * Deep learning models were not selected because the dataset is structured and tabular, where tree-based ensemble models typically perform better.
 * XGBoost was considered but not implemented, as Gradient Boosting already achieved strong performance.
 * Accuracy was not used as the primary evaluation metric due to the healthcare context, where recall is more critical for minimizing missed positive cases.
+
+## 2.8 Generative AI Integration
+
+To improve interpretability and user interaction, a generative AI component was integrated into the deployed application. While the machine learning model predicts the probability of influenza infection based on symptom inputs, generative AI is used to translate the prediction results into clear, human-readable explanations.
+
+After the model calculates the flu risk probability, the application sends the prediction result and the reported symptoms to a generative AI model through the OpenAI API. The generative AI model then produces a contextual explanation that includes:
+
+* An interpretation of the predicted flu risk score.
+
+* A summary of the symptoms reported by the user.
+
+* General health guidance and suggested next steps.
+
+For example, if the model predicts a high probability of influenza based on symptoms such as fever, fatigue, and muscle aches, the generative AI system provides a natural-language explanation describing why these symptoms are commonly associated with flu-like illnesses and suggests general precautions such as rest, hydration, or consulting a healthcare professional.
+
+This integration transforms the application from a simple prediction tool into an interactive decision-support system. By combining machine learning predictions with generative AI explanations, the system improves usability and accessibility for non-technical users while maintaining clear disclaimers that the tool does not provide medical diagnosis.
 
 
 
@@ -170,6 +189,8 @@ Gradient Boosting performed better than expected, especially after hyperparamete
 The feature engineering process also contributed meaningfully to performance improvements. Creating aggregated symptom features enabled the model to capture broader clinical patterns beyond individual symptom indicators.
 
 Additionally, deploying the model using Streamlit demonstrated that the solution could function outside of a notebook environment. This significantly strengthened the practical value of the project and reinforced the importance of thinking beyond experimentation toward real-world usability.
+
+Another aspect that enhanced the project was the integration of generative AI into the deployed application. By incorporating the OpenAI API, the system was able to transform numerical prediction outputs into natural language explanations. This significantly improved the usability of the application by helping users understand the meaning of the predicted flu risk and the potential implications of their reported symptoms.
 
 
 
@@ -225,6 +246,9 @@ Developing a high-performing model is only part of the process. Deployment intro
 Clear organization and reproducibility are as important as strong model performance.
 
 Overall, this project strengthened my understanding of end-to-end machine learning workflows, from problem framing to deployment, and emphasized the importance of aligning technical decisions with real-world healthcare impact.
+
+**Combining Predictive Models with Generative AI Enhances Interpretability**
+Integrating generative AI into the application demonstrated how predictive machine learning models can be complemented with language models to produce user-friendly explanations. This hybrid approach improves accessibility and helps bridge the gap between technical model outputs and real-world decision-making.
 
 
 
