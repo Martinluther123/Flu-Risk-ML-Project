@@ -228,27 +228,28 @@ If extending this project, I would:
 
 ## 3.4 Key Lessons Learned
 
-This project reinforced several important lessons about applying machine learning to real-world problems:
+**Problem Context Determines the Right Metrics**:
+Choosing recall instead of accuracy was an intentional decision based on the healthcare context. In this project, missing a flu-positive case could delay treatment and increase the risk of spreading infection. Therefore, the model evaluation focused on identifying as many true flu cases as possible.
 
-**Problem Context Drives Metric Selection**
-Choosing recall over accuracy was not just a technical decision but a contextual one grounded in healthcare impact.
+**Comparing Multiple Models Is Important**:
+Testing several machine learning algorithms helped ensure that the final model choice was based on evidence rather than assumptions. This comparison process made it easier to identify the model that performed best for the dataset.
 
-**Model Comparison Is Essential**
-Evaluating multiple algorithms provided clarity and prevented premature conclusions.
+**Hyperparameter Tuning Should Be Efficient**:
+Using RandomizedSearchCV made the tuning process more practical. It allowed the model to explore different parameter combinations without requiring excessive computation time, while still improving performance.
 
-**Hyperparameter Tuning Must Be Strategic**
-Efficient search strategies like RandomizedSearchCV balance performance gains with computational cost.
+**Deployment Requires Additional Skills**:
+Building a good model is only one part of a machine learning project. Deploying the model introduced new challenges such as managing file paths, handling dependencies, and ensuring compatibility between local development environments and cloud deployment.
 
-**Deployment Is a Distinct Skill**
-Developing a high-performing model is only part of the process. Deployment introduced additional considerations such as file management, version control, and environment compatibility.
+**Clear Documentation and Organization Matter**:
+Structuring the project clearly and documenting each step made the work easier to understand and reproduce. Good documentation is just as important as model performance when presenting a data science project.
 
-**Documentation and Structure Matter**
-Clear organization and reproducibility are as important as strong model performance.
+**Combining Machine Learning with Generative AI Improves Interpretability**:
+Integrating generative AI into the application helped translate technical model outputs into simple explanations that users can easily understand. This approach improves accessibility and helps bridge the gap between complex machine learning predictions and practical decision-making.
 
-Overall, this project strengthened my understanding of end-to-end machine learning workflows, from problem framing to deployment, and emphasized the importance of aligning technical decisions with real-world healthcare impact.
+**Overall Reflection**:
+This project strengthened my understanding of the complete machine learning workflow from defining a real-world problem and building predictive models to deploying the solution and making the results understandable for users. It also reinforced the importance of aligning technical decisions with real-world healthcare needs.
 
-**Combining Predictive Models with Generative AI Enhances Interpretability**
-Integrating generative AI into the application demonstrated how predictive machine learning models can be complemented with language models to produce user-friendly explanations. This hybrid approach improves accessibility and helps bridge the gap between technical model outputs and real-world decision-making.
+
 
 
 
