@@ -136,7 +136,7 @@ if st.button("Predict Flu Risk"):
     risk_prob = model.predict_proba(input_df)[0][1]
 
     st.subheader("Flu Risk Probability")
-    st.write(f"{risk_prob*100:.2f}%")
+    st.metric("Predicted Flu Risk", f"{risk_prob*100:.2f}%")
 
     if risk_prob > 0.5:
         st.warning("High risk of flu. Consider consulting a healthcare professional.")
@@ -152,8 +152,16 @@ if st.button("Predict Flu Risk"):
     # -----------------------------
     # Generate AI explanation
     # -----------------------------
-    ai_response = generate_ai_explanation(symptom_summary, risk_prob)
+    with st.spinner("Generating AI health insight..."):
+        try:
+            ai_response = generate_ai_explanation(symptom_summary, risk_prob)
 
-    st.subheader("AI Health Insight")
-    st.write(ai_response)
+            st.subheader("AI Health Insight")
+            st.write(ai_response)
 
+        except Exception:
+            st.subheader("AI Health Insight")
+            st.warning(
+                "AI explanation is currently unavailable. "
+                "However, your flu risk prediction above is still valid."
+            )
