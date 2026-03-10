@@ -1,6 +1,4 @@
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
 import joblib # pyright: ignore[reportMissingImports]
 import streamlit as st # pyright: ignore[reportMissingImports]
@@ -23,22 +21,6 @@ FEATURE_PATH = os.path.join(BASE_DIR, "../models/feature_order.pkl")
 model = joblib.load(MODEL_PATH)
 feature_order = joblib.load(FEATURE_PATH)
 
-#Feature importance function
-
-def explain_prediction(input_df, model, feature_order):
-
-    importances = model.feature_importances_
-
-    feature_importance = list(zip(feature_order, importances))
-
-    sorted_features = sorted(feature_importance, key=lambda x: x[1], reverse=True)
-
-    top_features = sorted_features[:5]
-
-    features = [f[0] for f in top_features]
-    values = [f[1] for f in top_features]
-
-    return features, values
 
  #AI Explanation Function       
 def generate_ai_explanation(symptoms, risk_score):
@@ -168,19 +150,8 @@ if st.button("Predict Flu Risk"):
     symptom_list = [col for col, val in input_df.iloc[0].items() if val == 1]
     symptom_summary = ", ".join(symptom_list)
     
-    #Model Prediction Explanation
-    features, values = explain_prediction(input_df, model, feature_order)
-
-    st.subheader("Model Explanation")
-
-    fig, ax = plt.subplots()
-
-    ax.barh(features, values)
-
-    ax.set_xlabel("Importance")
-    ax.set_title("Top Factors Influencing Prediction")
-
-    st.pyplot(fig)
+    #UI Improvement
+    st.divider()
 
     # -----------------------------
     # Generate AI explanation
