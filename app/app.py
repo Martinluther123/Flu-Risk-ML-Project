@@ -1,7 +1,9 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 import os
 import joblib # pyright: ignore[reportMissingImports]
 import streamlit as st # pyright: ignore[reportMissingImports]
-import pandas as pd
 from openai import OpenAI # pyright: ignore[reportMissingImports]
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -20,6 +22,23 @@ FEATURE_PATH = os.path.join(BASE_DIR, "../models/feature_order.pkl")
 # Load files
 model = joblib.load(MODEL_PATH)
 feature_order = joblib.load(FEATURE_PATH)
+
+#Feature importance function
+
+def explain_prediction(input_df, model, feature_order):
+
+    importances = model.feature_importances_
+
+    feature_importance = list(zip(feature_order, importances))
+
+    sorted_features = sorted(feature_importance, key=lambda x: x[1], reverse=True)
+
+    top_features = sorted_features[:5]
+
+    features = [f[0] for f in top_features]
+    values = [f[1] for f in top_features]
+
+    return features, values
 
  #AI Explanation Function       
 def generate_ai_explanation(symptoms, risk_score):
@@ -139,15 +158,29 @@ if st.button("Predict Flu Risk"):
     st.metric("Predicted Flu Risk", f"{risk_prob*100:.2f}%")
 
     if risk_prob > 0.5:
-        st.warning("High risk of flu. Consider consulting a healthcare professional.")
+        st.warning("High risk of flu.")
     else:
-        st.success("Low risk of flu. Stay safe!")
+        st.success("Low risk of flu.")
 
     # -----------------------------
     # Prepare symptom summary
     # -----------------------------
     symptom_list = [col for col, val in input_df.iloc[0].items() if val == 1]
     symptom_summary = ", ".join(symptom_list)
+    
+    #Model Prediction Explanation
+    features, values = explain_prediction(input_df, model, feature_order)
+
+    st.subheader("Model Explanation")
+
+    fig, ax = plt.subplots()
+
+    ax.barh(features, values)
+
+    ax.set_xlabel("Importance")
+    ax.set_title("Top Factors Influencing Prediction")
+
+    st.pyplot(fig)
 
     # -----------------------------
     # Generate AI explanation
