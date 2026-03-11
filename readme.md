@@ -7,7 +7,7 @@ This project develops and deploys a machine learning model that estimates the li
 - notebooks → model development code.
 - models → trained model files.
 - app → Streamlit deployment.
-- data → dataset
+- data → dataset link
 - report.md → Project questions and answers.
 
 ## Live App
