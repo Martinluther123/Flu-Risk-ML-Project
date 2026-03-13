@@ -13,4 +13,7 @@ This project develops and deploys a machine learning model that estimates the li
 ## Live App
 https://flu-risk-ml-project-an3qkekd6wc2wrujstnk4w.streamlit.app/
 
+## Project Video Presentation
+https://youtu.be/fK16xwUVMw0
+
 
